@@ -1,0 +1,3 @@
+RES = WIDTH, HEIGHT = 720, 480
+
+FPS = 60
