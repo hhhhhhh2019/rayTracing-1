@@ -1,34 +1,47 @@
 import math as m
-import numpy as np
 from camera import Camera
 from object import *
-import pygame as pg
+from matplotlib import pyplot as plt
 from settings import *
 
 
-screen = pg.display.set_mode(RES)
-clock = pg.time.Clock()
+obj = Object(np.array([
+        [-1, -1, -1],
+        [-1, 1, -1],
+        [1, 1, -1],
+        [1, -1, -1],
+        [-1, -1, 1],
+        [-1, 1, 1],
+        [1, 1, 1],
+        [1, -1, 1]
+    ]),
+    np.array([
+        [2, 1, 0],
+        [3, 2, 0],
+        [2, 6, 3],
+        [3, 6, 7],
+        [5, 2, 1],
+        [6, 2, 5]
+    ]))
 
 scene = [
-    Object(np.array([
-        [-0.5, -0.5, 1.5],
-        [0, 0.5, 1],
-        [0.5, -0.5, 1]
-    ]),
-    np.array([[0, 1, 2]]))
-    # load_obj('object1.obj')
+    obj
 ]
 
-camera = Camera(np.array([0, 0, 0]), [100, 100], m.pi / 2)
+camera = Camera(np.array([2, 2, -3]), [100, 100], m.pi / 1.5)
 
-while True:
-    screen.fill((0, 0, 0))
+camera.rotate_x(0.5)
+camera.rotate_y(-0.5)
 
-    for e in pg.event.get():
-        if e.type == pg.QUIT:
-            exit()
+light_dir = [1, 0.1, 0]
 
-    camera.render(screen, scene)
+screen = camera.render(scene, light_dir)
 
-    pg.display.flip()
-    pg.display.set_caption(str(clock.get_fps()))
+print(len(screen[0]), len(screen))
+
+fg = plt.figure()
+ax = fg.gca()
+
+plot = ax.imshow(screen, origin='lower')
+plt.draw()
+plt.pause(1000)

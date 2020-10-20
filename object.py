@@ -1,4 +1,5 @@
 import numpy as np
+from matrix import rotate_y
 
 
 def load_obj(file):
@@ -18,4 +19,11 @@ class Object:
     def __init__(self, vert, faces):
         self.vert, self.faces = vert, faces
 
-        print(vert, faces)
+    def rotate_y(self, a):
+        new_vert = []
+
+        for i in self.vert:
+            vert = [i[0], i[1], i[2], 1] @ rotate_y(a)
+            new_vert.append(vert[:3])
+
+        self.vert = new_vert
